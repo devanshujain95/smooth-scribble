@@ -3,12 +3,15 @@
 ## Showcase Website
 
 - A static GitHub Pages showcase has been added under `docs/`.
-- The showcase follows the same proposal pattern as the earlier Flip the Track page: sticky header, branded hero, demo theater, direct client answers, source/proof links, technical fit mapping, production next steps, contact, and footer.
+- The showcase follows the same visual pattern as the earlier Flip the Track page but is now scoped only to the client-requested exercise deliverables: screen recording stage, source-code link, brief smoothing implementation note, drawing/smoothing logic, real-device performance tradeoff, and the requested application answers.
 - The page is tailored to the Smooth Scribble drawing-canvas exercise with Midnight Teal styling, warm paper sections, teal primary actions, gold accents, and the app's abstract canvas logo.
 - `docs/assets/brand-logo.png` uses the existing Abstract Canvas master icon, and `docs/assets/favicon.png` uses the existing BootSplash logo for the browser tab icon.
+- The navigation now contains only `Demo`, `Note`, and `Answers`; broader proposal sections such as technical-fit mapping, roadmap, portfolio/source-proof grid, and contact were removed because they were not part of the requested exercise response.
 - The demo theater is prepared for two recordings:
   - `docs/assets/showcase/product-demo.mp4` for the live app demo.
   - `docs/assets/showcase/technical-walkthrough.mp4` for the spoken implementation walkthrough.
+- The implementation note explicitly answers how smoothing works: point thinning, velocity-aware low-pass filtering, quadratic midpoint curves, coalesced pointer events, `requestAnimationFrame` batching, incremental active-stroke drawing, and capped stroke history for replay/undo.
+- The tradeoff answer calls out the WebView canvas choice versus a native renderer and the real-device concerns to watch: WebView rendering cost, memory growth, touch latency on older iPhones, and renderer escalation if profiling proves it necessary.
 - Until both MP4 files exist, `docs/showcase.js` keeps polished placeholders visible and disables the shared playback controls. Once both files are present, it replaces the placeholders with synchronized videos using the same paired-playback pattern as the Flip the Track showcase.
 - The target GitHub Pages URL after enabling Pages from `main` and `/docs` is `https://devanshujain95.github.io/smooth-scribble/`.
 
