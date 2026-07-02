@@ -12,6 +12,8 @@
   - `docs/assets/showcase/technical-walkthrough.mp4` for the spoken implementation walkthrough.
 - The implementation note explicitly answers how smoothing works: point thinning, velocity-aware low-pass filtering, quadratic midpoint curves, coalesced pointer events, `requestAnimationFrame` batching, incremental active-stroke drawing, and capped stroke history for replay/undo.
 - The tradeoff answer calls out the WebView canvas choice versus a native renderer and the real-device concerns to watch: WebView rendering cost, memory growth, touch latency on older iPhones, and renderer escalation if profiling proves it necessary.
+- The client-answer section now uses a polished LovelyCouple example for touch-heavy work, including a shared drawing canvas, WebSocket-connected users, iOS widget surfacing, and why React Native Skia was appropriate there while this exercise intentionally uses custom WebView Canvas smoothing.
+- The project-enjoyment answer now emphasizes aesthetic, scalable mobile app work and explains the importance of 60 FPS, frame pacing, JS-thread work, rendering cost, and memory usage for fluid user experiences.
 - Until both MP4 files exist, `docs/showcase.js` keeps polished placeholders visible and disables the shared playback controls. Once both files are present, it replaces the placeholders with synchronized videos using the same paired-playback pattern as the Flip the Track showcase.
 - The target GitHub Pages URL after enabling Pages from `main` and `/docs` is `https://devanshujain95.github.io/smooth-scribble/`.
 

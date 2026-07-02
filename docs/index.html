@@ -54,7 +54,7 @@
             <p class="eyebrow">Demo theater</p>
             <h2 id="demo-title">App demo and technical walkthrough</h2>
             <p>
-              This stage is prepared for the requested screen recording. The app demo goes on the left, and the spoken walkthrough goes on the right. The recording should stay under 10 minutes and cover the live canvas, how the drawing and smoothing work, what I would improve next, and one real-device performance tradeoff.
+              This stage is for the requested screen recording. The app demo is on the left, and the spoken walkthrough is on the right.
             </p>
           </div>
 
@@ -108,7 +108,7 @@
           <p class="eyebrow">Submission note</p>
           <h2 id="note-title">Brief smoothing implementation note</h2>
           <p>
-            The source code is available at <a href="https://github.com/devanshujain95/smooth-scribble" target="_blank" rel="noreferrer">github.com/devanshujain95/smooth-scribble</a>. The drawing implementation lives in the WebView canvas HTML and the React Native layer only sends low-frequency control commands.
+            The source code is available at <a href="https://github.com/devanshujain95/smooth-scribble" target="_blank" rel="noreferrer">github.com/devanshujain95/smooth-scribble</a>. The drawing implementation lives in the WebView's HTML5 Canvas runtime, and the React Native layer only sends low-frequency control commands.
           </p>
         </div>
 
@@ -118,33 +118,20 @@
             <div class="question-content">
               <h3>Drawing and smoothing logic</h3>
               <p>
-                The drawing surface is an HTML5 Canvas hosted inside <code>react-native-webview</code>. Pointer events are handled inside the canvas runtime, which keeps high-frequency touch data away from React Native state and avoids sending every point over the bridge.
+                The drawing surface is an HTML5 Canvas hosted through the <code>react-native-webview</code> library. Pointer events are handled inside the canvas runtime, which keeps high-frequency touch data away from React Native state and avoids sending every point over the bridge.
               </p>
               <ul>
                 <li>Point thinning ignores noisy duplicate points closer than <code>1.5px</code>, while still accepting a point after <code>24ms</code> so slow strokes do not feel stuck.</li>
                 <li>A velocity-aware low-pass filter smooths slow movement more and fast movement less, so careful lines stabilize without making fast scribbles visibly trail behind the finger.</li>
                 <li>Quadratic midpoint curves render the accepted smoothed points as rounded Bezier segments instead of sharp polylines.</li>
                 <li>Fast pointer moves are batched with <code>requestAnimationFrame</code>, and coalesced pointer events are consumed when the browser provides them.</li>
-                <li>Completed strokes are stored for undo/replay with a capped history, while active strokes are drawn incrementally instead of redrawing the full canvas on every move.</li>
+                <li>Completed strokes are stored in WebView-side history for undo/replay, not in React Native state, while active strokes are drawn incrementally instead of redrawing the full canvas on every move.</li>
               </ul>
             </div>
           </article>
 
           <article class="question-card">
             <span class="question-number">02</span>
-            <div class="question-content">
-              <h3>What I would cover in the screen recording</h3>
-              <ul>
-                <li>Show fast scribbling, slow controlled strokes, brush color changes, brush width changes, undo, clear, and full-screen canvas mode.</li>
-                <li>Explain why the canvas work runs inside the WebView instead of routing every move through React Native state.</li>
-                <li>Walk through point thinning, velocity-aware smoothing, midpoint curves, rAF batching, and stroke replay for undo.</li>
-                <li>Explain what I would improve next for production: real-device profiling, tuning constants, longer-session memory policy, and export/share only if the product needs it.</li>
-              </ul>
-            </div>
-          </article>
-
-          <article class="question-card">
-            <span class="question-number">03</span>
             <div class="question-content">
               <h3>Tradeoff and real-device performance consideration</h3>
               <p class="line-highlight">
@@ -205,12 +192,13 @@
             <div class="question-content">
               <h3>An example of a touch-heavy or interactive feature I built</h3>
               <p class="line-highlight">
-                <strong>Smooth Scribble is a focused version of that exact problem: fast finger movement, noisy touch points, and a drawing surface that needs to feel immediate instead of laggy.</strong>
+                <strong>I built a very similar canvas-heavy feature for one of my apps, LovelyCouple, where the user could draw on a shared canvas and see that drawing reflected in an iOS widget in near-real time.</strong>
               </p>
               <ul>
-                <li>Smooth Scribble is a touch-heavy canvas feature with fast scribbling, slow strokes, brush controls, undo, clear, and full-screen mode.</li>
-                <li>The current implementation keeps high-frequency drawing work inside the canvas runtime and sends only compact control messages from React Native.</li>
-                <li>The smoothing logic is custom and lives in the source code, not inside Skia or another drawing library.</li>
+                <li>In LovelyCouple, the canvas state was shared with another connected user through WebSockets, so both users could stay in sync while interacting with the drawing experience.</li>
+                <li>I also added an iOS widget flow where the latest drawing could be surfaced on the widget tile, giving the user a glanceable version of what was created in the app.</li>
+                <li>For that production-style feature, I used React Native Skia because it made real-time canvas rendering, state management, and widget snapshot generation simpler to manage.</li>
+                <li>For this exercise, I intentionally used a custom WebView HTML5 Canvas implementation because the client specifically asked to avoid drawing libraries and show my own smoothing logic.</li>
               </ul>
             </div>
           </article>
@@ -234,7 +222,7 @@
             <div class="question-content">
               <h3>A project I enjoyed and what I learned from it</h3>
               <p>
-                I enjoy projects where product feel matters as much as functional correctness. Smooth Scribble reinforces the same lesson: the implementation is only good if the touch response feels natural in hand. Small details like event batching, brush feedback, safe-area-aware full-screen mode, and launch polish make the difference between a prototype and something that feels ready to evaluate.
+                I enjoy building aesthetic and scalable mobile applications where the product feels smooth, polished, and reliable. One thing I pay close attention to is FPS, or frames per second. Apple generally targets 60 FPS for fluid interaction, so when I build animations, transitions, drawing surfaces, or other touch-heavy flows, I think carefully about frame pacing, JS-thread work, rendering cost, and memory usage. That attention to performance helps the app feel fluid and responsive for the user instead of just functionally complete.
               </p>
             </div>
           </article>
