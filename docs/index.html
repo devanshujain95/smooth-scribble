@@ -1,0 +1,343 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Smooth Scribble Proposal</title>
+    <meta
+      name="description"
+      content="Smooth Scribble React Native drawing canvas exercise: app demo stage, custom smoothing walkthrough, client answers, technical fit, next improvements, and contact details."
+    />
+    <link rel="icon" href="assets/favicon.png" />
+    <link rel="stylesheet" href="showcase.css" />
+  </head>
+  <body>
+    <header class="site-header" aria-label="Site header">
+      <a class="brand-lockup" href="#top" aria-label="Smooth Scribble home">
+        <img src="assets/favicon.png" alt="Smooth Scribble logo" />
+        <span>Smooth Scribble</span>
+      </a>
+      <nav class="header-nav" aria-label="Page sections">
+        <a href="#demo-stage">Demo</a>
+        <a href="#client-answers">Answers</a>
+        <a href="#technical-fit">Fit</a>
+        <a href="#next-steps">Next</a>
+        <a href="#contact">Contact</a>
+      </nav>
+    </header>
+
+    <main id="top">
+      <section class="hero-section" aria-labelledby="hero-title">
+        <div class="hero-logo-wrap" aria-hidden="true">
+          <img src="assets/brand-logo.png" alt="" />
+        </div>
+        <div class="hero-content">
+          <p class="eyebrow">React Native Drawing Canvas Exercise</p>
+          <h1 id="hero-title">Smooth Scribble</h1>
+          <p class="hero-subtitle">
+            A focused iOS drawing prototype built with React Native, TypeScript, and a custom HTML5 Canvas smoothing engine. No Skia. No drawing library. Just responsive touch handling, smooth strokes, and production-minded tradeoffs.
+          </p>
+          <div class="hero-actions" aria-label="Primary actions">
+            <a class="button button-primary" href="#demo-stage">
+              <span aria-hidden="true">&gt;</span>
+              View demo stage
+            </a>
+            <a class="button button-secondary" href="#client-answers">
+              <span aria-hidden="true">+</span>
+              Review answers
+            </a>
+          </div>
+        </div>
+      </section>
+
+      <section class="section demo-section" id="demo-stage" aria-labelledby="demo-title">
+        <div class="demo-player">
+          <div class="section-heading">
+            <p class="eyebrow">Demo theater</p>
+            <h2 id="demo-title">App demo and technical walkthrough</h2>
+            <p>
+              This stage is ready for the two recordings requested in the exercise: a live app demo on the left and a spoken technical walkthrough on the right. The placeholders will automatically become synchronized video players after the MP4 files are added.
+            </p>
+          </div>
+
+          <div class="media-grid" data-paired-videos>
+            <article
+              class="media-panel"
+              data-video-panel="left"
+              data-video-src="assets/showcase/product-demo.mp4"
+              data-video-label="Smooth Scribble app demo"
+            >
+              <div class="media-placeholder">
+                <span class="play-token" aria-hidden="true">&gt;</span>
+                <h3>App demo recording</h3>
+                <p>Drop the app demo at <strong>docs/assets/showcase/product-demo.mp4</strong>.</p>
+              </div>
+            </article>
+
+            <article
+              class="media-panel"
+              data-video-panel="right"
+              data-video-src="assets/showcase/technical-walkthrough.mp4"
+              data-video-label="Smooth Scribble technical walkthrough"
+            >
+              <div class="media-placeholder media-placeholder-alt">
+                <span class="play-token" aria-hidden="true">&gt;</span>
+                <h3>Technical walkthrough</h3>
+                <p>Drop the explanation recording at <strong>docs/assets/showcase/technical-walkthrough.mp4</strong>.</p>
+              </div>
+            </article>
+          </div>
+          <button class="button button-primary media-sync-button" type="button" data-video-toggle disabled>
+            <span aria-hidden="true">&gt;</span>
+            Add recordings to play
+          </button>
+          <input
+            class="media-progress"
+            data-video-progress
+            type="range"
+            min="0"
+            max="100"
+            value="0"
+            step="0.1"
+            disabled
+            aria-label="Recording progress"
+          />
+        </div>
+      </section>
+
+      <section class="section questions-section" id="client-answers" aria-labelledby="answers-title">
+        <div class="section-heading">
+          <p class="eyebrow">Client application questions</p>
+          <h2 id="answers-title">Direct answers</h2>
+          <p>
+            The exercise is intentionally small, so these answers focus on proof, implementation choices, and how I would approach a real production drawing feature.
+          </p>
+        </div>
+
+        <div class="question-list">
+          <article class="question-card">
+            <span class="question-number">01</span>
+            <div class="question-content">
+              <h3>A mobile app I have shipped and what I was responsible for</h3>
+              <p>
+                I have shipped multiple React Native mobile products and worked across product screens, native integrations, app polish, release readiness, and store submission details. Public examples include:
+              </p>
+              <div class="proof-links" aria-label="Shipped app links">
+                <a href="https://play.google.com/store/apps/details?id=com.qewd" target="_blank" rel="noreferrer">
+                  <strong>QEWD</strong>
+                  <span>Google Play</span>
+                </a>
+                <a href="https://apps.apple.com/us/app/lyra-music-radio-esound/id6747066887" target="_blank" rel="noreferrer">
+                  <strong>Lyra</strong>
+                  <span>iOS music app</span>
+                </a>
+                <a href="https://apps.apple.com/us/app/potato-waves-focus-timer/id6757202644" target="_blank" rel="noreferrer">
+                  <strong>Pomodoro Timer</strong>
+                  <span>iOS productivity app</span>
+                </a>
+                <a href="https://apps.apple.com/us/app/love-letter-bff/id6756315002" target="_blank" rel="noreferrer">
+                  <strong>Love Letter</strong>
+                  <span>iOS social app</span>
+                </a>
+                <a href="https://apps.apple.com/us/app/cleanmind-voice-diary/id6758046617" target="_blank" rel="noreferrer">
+                  <strong>Clean Mind</strong>
+                  <span>iOS voice diary</span>
+                </a>
+              </div>
+            </div>
+          </article>
+
+          <article class="question-card">
+            <span class="question-number">02</span>
+            <div class="question-content">
+              <h3>An example of a touch-heavy or interactive feature I built</h3>
+              <p class="line-highlight">
+                <strong>Smooth Scribble is a focused version of that exact problem: fast finger movement, noisy touch points, and a drawing surface that needs to feel immediate instead of laggy.</strong>
+              </p>
+              <ul>
+                <li>The canvas runs inside a WebView-backed HTML5 Canvas so high-frequency drawing work stays off the React Native render loop.</li>
+                <li>The host app sends only low-frequency commands such as brush changes, undo, clear, and status updates.</li>
+                <li>The UI includes full-screen drawing, brush colors, brush widths, stroke count, undo, clear, and branded launch polish.</li>
+                <li>The smoothing logic is custom and lives in the project source, not inside Skia or a drawing library.</li>
+              </ul>
+            </div>
+          </article>
+
+          <article class="question-card">
+            <span class="question-number">03</span>
+            <div class="question-content">
+              <h3>How I would improve a laggy drawing experience on older iPhones</h3>
+              <ul>
+                <li>First I would profile real devices and separate input latency, rendering cost, bridge traffic, memory pressure, and JS thread work.</li>
+                <li>I would keep pointer processing close to the drawing surface instead of sending every touch point through React Native state.</li>
+                <li>I would thin duplicate points, batch drawing with <code>requestAnimationFrame</code>, use coalesced pointer events when available, and cap stroke history.</li>
+                <li>I would tune smoothing constants against real touch latency so fast strokes do not trail behind the finger.</li>
+                <li>If stroke volume, export quality, or long sessions became the bottleneck, I would evaluate a native renderer while keeping the smoothing behavior testable.</li>
+              </ul>
+            </div>
+          </article>
+
+          <article class="question-card">
+            <span class="question-number">04</span>
+            <div class="question-content">
+              <h3>A project I enjoyed and what I learned from it</h3>
+              <p>
+                I enjoy projects where product feel matters as much as functional correctness. Smooth Scribble reinforces the same lesson: the implementation is only good if the touch response feels natural in hand. Small details like event batching, brush feedback, safe-area-aware full-screen mode, and launch polish make the difference between a prototype and something that feels ready to evaluate.
+              </p>
+            </div>
+          </article>
+        </div>
+      </section>
+
+      <section class="section portfolio-section" aria-labelledby="portfolio-title">
+        <div class="section-heading">
+          <p class="eyebrow">Source and proof</p>
+          <h2 id="portfolio-title">Submission links</h2>
+          <p>
+            The source code link, app proof, and profile links are grouped here so the client can quickly verify the submission.
+          </p>
+        </div>
+
+        <div class="portfolio-grid">
+          <a href="https://github.com/devanshujain95/smooth-scribble" class="portfolio-link" target="_blank" rel="noreferrer">
+            <strong>Source Code</strong>
+            <span>GitHub repository</span>
+          </a>
+          <a href="https://github.com/devanshujain95" class="portfolio-link" target="_blank" rel="noreferrer">
+            <strong>GitHub</strong>
+            <span>devanshujain95</span>
+          </a>
+          <a href="https://www.qewd.com/" class="portfolio-link" target="_blank" rel="noreferrer">
+            <strong>QEWD Web</strong>
+            <span>Product website</span>
+          </a>
+          <a href="https://play.google.com/store/apps/details?id=com.qewd" class="portfolio-link" target="_blank" rel="noreferrer">
+            <strong>QEWD</strong>
+            <span>Google Play app</span>
+          </a>
+          <a href="https://apps.apple.com/us/app/lyra-music-radio-esound/id6747066887" class="portfolio-link" target="_blank" rel="noreferrer">
+            <strong>Lyra</strong>
+            <span>iOS music app</span>
+          </a>
+          <a href="mailto:devanshujain95@gmail.com" class="portfolio-link">
+            <strong>Email</strong>
+            <span>devanshujain95@gmail.com</span>
+          </a>
+        </div>
+      </section>
+
+      <section class="section match-section" id="technical-fit" aria-labelledby="fit-title">
+        <div class="section-heading">
+          <p class="eyebrow">Technical fit</p>
+          <h2 id="fit-title">How this maps to the requested app work</h2>
+          <p>
+            The exercise asks for a simple drawing canvas, but the choices below are the same choices I would care about in a production React Native app with canvas-heavy interaction.
+          </p>
+        </div>
+
+        <div class="scope-match-list" aria-label="Technical fit mapping">
+          <article class="scope-match-card">
+            <span class="scope-match-number">01</span>
+            <div>
+              <h3>React Native and TypeScript foundation</h3>
+              <p>The project is a React Native CLI iOS app written in TypeScript, with a focused screen structure and small typed interfaces for canvas commands, brush state, and status messages.</p>
+            </div>
+          </article>
+
+          <article class="scope-match-card">
+            <span class="scope-match-number">02</span>
+            <div>
+              <h3>Custom smoothing instead of a graphics library</h3>
+              <p>The smoothing uses point thinning, velocity-aware low-pass filtering, and quadratic midpoint curves. That keeps the implementation inspectable and satisfies the exercise requirement to avoid drawing libraries such as Skia.</p>
+            </div>
+          </article>
+
+          <article class="scope-match-card">
+            <span class="scope-match-number">03</span>
+            <div>
+              <h3>Responsive drawing loop</h3>
+              <p>Fast pointer moves are batched through <code>requestAnimationFrame</code>, coalesced input events are consumed when available, and completed strokes are replayed only when needed for undo, clear, resize, or history trimming.</p>
+            </div>
+          </article>
+
+          <article class="scope-match-card">
+            <span class="scope-match-number">04</span>
+            <div>
+              <h3>Bridge-conscious architecture</h3>
+              <p>The React Native layer does not receive every touch point. Drawing stays inside the WebView canvas, while native UI controls send compact commands for brush changes, undo, clear, and status updates.</p>
+            </div>
+          </article>
+
+          <article class="scope-match-card">
+            <span class="scope-match-number">05</span>
+            <div>
+              <h3>Mobile polish and release awareness</h3>
+              <p>The app includes safe-area handling, full-screen canvas mode, icon controls, branded splash assets, an app icon, linting, type checking, and a small Jest smoke test.</p>
+            </div>
+          </article>
+        </div>
+      </section>
+
+      <section class="section roadmap-section" id="next-steps" aria-labelledby="next-title">
+        <div class="section-heading">
+          <p class="eyebrow">Production thinking</p>
+          <h2 id="next-title">What I would improve next</h2>
+        </div>
+
+        <ol class="timeline-list">
+          <li>
+            <strong>Profile on older iPhones</strong>
+            <span>Measure input latency, frame pacing, memory growth, and WebView rendering behavior on real hardware before changing architecture.</span>
+          </li>
+          <li>
+            <strong>Tune smoothing constants against real touch</strong>
+            <span>Adjust point distance, force-accept timing, and velocity alpha until slow lines feel stable and fast scribbles stay close to the finger.</span>
+          </li>
+          <li>
+            <strong>Harden long-session behavior</strong>
+            <span>Improve memory policy for many strokes, large canvases, undo depth, resize replay, and possible future export flows.</span>
+          </li>
+          <li>
+            <strong>Add production drawing features only when scoped</strong>
+            <span>Layer persistence, export/share, pressure handling, eraser tools, and collaboration should be added only if they support the actual product need.</span>
+          </li>
+          <li>
+            <strong>Escalate renderer only if the data proves it</strong>
+            <span>If stroke volume or export quality outgrows the WebView canvas approach, I would move the renderer closer to native while preserving the custom smoothing model.</span>
+          </li>
+        </ol>
+      </section>
+
+      <section class="section contact-section" id="contact" aria-labelledby="contact-title">
+        <div class="section-heading">
+          <p class="eyebrow">Contact</p>
+          <h2 id="contact-title">Connect with me</h2>
+          <p>
+            I can share the source repository, the app demo recording, and a short technical explanation covering the smoothing logic, demo, production improvements, and performance tradeoffs.
+          </p>
+        </div>
+
+        <div class="contact-card">
+          <a href="mailto:devanshujain95@gmail.com">
+            <strong>Email</strong>
+            <span>devanshujain95@gmail.com</span>
+          </a>
+          <a href="https://x.com/devanshujain_" target="_blank" rel="noreferrer">
+            <strong>X</strong>
+            <span>x.com/devanshujain_</span>
+          </a>
+        </div>
+      </section>
+    </main>
+
+    <footer class="site-footer">
+      <img src="assets/favicon.png" alt="Smooth Scribble logo" />
+      <div>
+        <strong>Smooth Scribble React Native drawing exercise</strong>
+        <span>Custom smoothing, responsive touch handling, source proof, and next-step production thinking.</span>
+      </div>
+    </footer>
+
+    <script src="showcase.js"></script>
+  </body>
+</html>
