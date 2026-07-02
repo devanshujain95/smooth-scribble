@@ -7,6 +7,7 @@
   var delayedPlayTimer = null;
   var isSeeking = false;
   var videos = {};
+  var delayedOverlay = null;
 
   if (panels.length !== 2 || !toggleButton || !progressInput) {
     return;
@@ -61,6 +62,15 @@
     progressInput.value = String((videos.right.currentTime / duration) * 100);
   }
 
+  function updateDelayedOverlay() {
+    if (!delayedOverlay || !videos.right) {
+      return;
+    }
+
+    var shouldShow = (videos.right.currentTime || 0) < delayedStartSeconds;
+    delayedOverlay.hidden = !shouldShow;
+  }
+
   function setDelayedVideoTime(nextTime) {
     var safeTime = Math.max(0, nextTime);
 
@@ -84,6 +94,7 @@
     if (masterTime < delayedStartSeconds) {
       videos.left.pause();
       setDelayedVideoTime(0);
+      updateDelayedOverlay();
 
       if (shouldPlay) {
         delayedPlayTimer = window.setTimeout(function () {
@@ -99,6 +110,7 @@
     }
 
     setDelayedVideoTime(masterTime - delayedStartSeconds);
+    updateDelayedOverlay();
 
     if (shouldPlay && !videos.right.paused && !videos.left.ended) {
       playVideo(videos.left);
@@ -126,6 +138,7 @@
   function createVideo(panel) {
     var role = panel.getAttribute("data-video-panel");
     var src = panel.getAttribute("data-video-src");
+    var poster = panel.getAttribute("data-video-poster");
     var label = panel.getAttribute("data-video-label") || "Smooth Scribble recording";
     var video = document.createElement("video");
     var source = document.createElement("source");
@@ -136,6 +149,10 @@
     video.setAttribute("preload", "metadata");
     video.setAttribute("aria-label", label);
 
+    if (poster) {
+      video.setAttribute("poster", poster);
+    }
+
     if (role === "left") {
       video.muted = true;
     }
@@ -145,6 +162,14 @@
     video.appendChild(source);
     panel.innerHTML = "";
     panel.appendChild(video);
+
+    if (role === "left") {
+      delayedOverlay = document.createElement("div");
+      delayedOverlay.className = "media-delay-badge";
+      delayedOverlay.textContent = "Starts at 1:32";
+      panel.appendChild(delayedOverlay);
+    }
+
     videos[role] = video;
   }
 
@@ -157,6 +182,7 @@
     toggleButton.disabled = false;
     progressInput.disabled = false;
     setButtonState(false);
+    updateDelayedOverlay();
 
     toggleButton.addEventListener("click", function () {
       var isPlaying = !videos.right.paused || !videos.left.paused || Boolean(delayedPlayTimer);
@@ -181,6 +207,7 @@
       clearDelayedTimer();
       videos.right.currentTime = nextRightTime;
       syncDelayedToMaster(shouldContinuePlaying);
+      updateDelayedOverlay();
 
       if (shouldContinuePlaying && videos.right.paused) {
         playVideo(videos.right);
@@ -192,6 +219,7 @@
 
     videos.right.addEventListener("timeupdate", function () {
       updateProgress();
+      updateDelayedOverlay();
 
       if (!videos.right.paused) {
         syncDelayedToMaster(true);

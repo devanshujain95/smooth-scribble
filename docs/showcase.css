@@ -318,6 +318,7 @@ h3 {
 
 .media-panel {
   width: var(--media-panel-width);
+  position: relative;
   display: grid;
   place-items: center;
   justify-self: center;
@@ -331,8 +332,28 @@ h3 {
   width: 100%;
   max-width: 100%;
   height: min(620px, 68vh);
+  display: block;
   object-fit: contain;
   background: var(--background-deep);
+}
+
+.media-delay-badge {
+  position: absolute;
+  left: 50%;
+  bottom: 18px;
+  z-index: 2;
+  transform: translateX(-50%);
+  padding: 10px 14px;
+  border: 1px solid rgba(255, 247, 227, 0.34);
+  border-radius: 999px;
+  background: rgba(6, 43, 47, 0.84);
+  color: var(--canvas);
+  box-shadow: 0 14px 36px rgba(0, 0, 0, 0.28);
+  font-size: 13px;
+  font-weight: 900;
+  letter-spacing: 0;
+  pointer-events: none;
+  white-space: nowrap;
 }
 
 .media-sync-button {
