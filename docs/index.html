@@ -121,10 +121,10 @@
                 The drawing surface is an HTML5 Canvas hosted through the <code>react-native-webview</code> library. Pointer events are handled inside the canvas runtime, which keeps high-frequency touch data away from React Native state and avoids sending every point over the bridge.
               </p>
               <ul>
-                <li>Point thinning ignores noisy duplicate points closer than <code>1.5px</code>, while still accepting a point after <code>24ms</code> so slow strokes do not feel stuck.</li>
+                <li>Point thinning ignores noisy duplicate points closer than 1.5px, while still accepting a point after 24ms so slow strokes do not feel stuck.</li>
                 <li>A velocity-aware low-pass filter smooths slow movement more and fast movement less, so careful lines stabilize without making fast scribbles visibly trail behind the finger.</li>
                 <li>Quadratic midpoint curves render the accepted smoothed points as rounded Bezier segments instead of sharp polylines.</li>
-                <li>Fast pointer moves are batched with <code>requestAnimationFrame</code>, and coalesced pointer events are consumed when the browser provides them.</li>
+                <li>Fast pointer moves are batched with requestAnimationFrame, and coalesced pointer events are consumed when the browser provides them.</li>
                 <li>Completed strokes are stored in WebView-side history for undo/replay, not in React Native state, while active strokes are drawn incrementally instead of redrawing the full canvas on every move.</li>
               </ul>
             </div>
@@ -158,7 +158,7 @@
           <article class="question-card">
             <span class="question-number">01</span>
             <div class="question-content">
-              <h3>A mobile app I have shipped and what I was responsible for</h3>
+              <h3>Mobile apps I have shipped and what I was responsible for</h3>
               <p>
                 I have shipped multiple React Native mobile products and worked across product screens, native integrations, app polish, release readiness, and store submission details. Public examples include:
               </p>
@@ -198,7 +198,7 @@
                 <li>In LovelyCouple, the canvas state was shared with another connected user through WebSockets, so both users could stay in sync while interacting with the drawing experience.</li>
                 <li>I also added an iOS widget flow where the latest drawing could be surfaced on the widget tile, giving the user a glanceable version of what was created in the app.</li>
                 <li>For that production-style feature, I used React Native Skia because it made real-time canvas rendering, state management, and widget snapshot generation simpler to manage.</li>
-                <li>For this exercise, I intentionally used a custom WebView HTML5 Canvas implementation because the client specifically asked to avoid drawing libraries and show my own smoothing logic.</li>
+                <li>For this exercise, I intentionally used a custom WebView HTML5 Canvas implementation because you specifically asked to avoid drawing libraries and show my own smoothing logic.</li>
               </ul>
             </div>
           </article>
@@ -210,7 +210,7 @@
               <ul>
                 <li>First I would profile real devices and separate input latency, rendering cost, bridge traffic, memory pressure, and JS-thread work.</li>
                 <li>I would keep pointer processing close to the drawing surface instead of sending every touch point through React Native state.</li>
-                <li>I would thin duplicate points, batch drawing with <code>requestAnimationFrame</code>, use coalesced pointer events when available, and cap stroke history.</li>
+                <li>I would thin duplicate points, batch drawing with code requestAnimationFrame, use coalesced pointer events when available, and cap stroke history.</li>
                 <li>I would tune smoothing constants against real touch latency so fast strokes do not trail behind the finger.</li>
                 <li>If stroke volume, export quality, or long sessions became the bottleneck, I would evaluate a native renderer while keeping the smoothing behavior testable.</li>
               </ul>
