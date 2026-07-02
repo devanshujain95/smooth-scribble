@@ -2,8 +2,9 @@
   var panels = Array.prototype.slice.call(document.querySelectorAll("[data-video-panel]"));
   var toggleButton = document.querySelector("[data-video-toggle]");
   var progressInput = document.querySelector("[data-video-progress]");
-  var leftDelayMs = 550;
-  var leftPlayTimer = null;
+  var delayedStartSeconds = 92;
+  var syncToleranceSeconds = 0.35;
+  var delayedPlayTimer = null;
   var isSeeking = false;
   var videos = {};
 
@@ -25,10 +26,10 @@
     progressInput.disabled = true;
   }
 
-  function clearLeftTimer() {
-    if (leftPlayTimer) {
-      window.clearTimeout(leftPlayTimer);
-      leftPlayTimer = null;
+  function clearDelayedTimer() {
+    if (delayedPlayTimer) {
+      window.clearTimeout(delayedPlayTimer);
+      delayedPlayTimer = null;
     }
   }
 
@@ -53,33 +54,70 @@
   function updateProgress() {
     var duration = getDuration();
 
-    if (!duration || isSeeking) {
+    if (!duration || isSeeking || !videos.right) {
       return;
     }
 
     progressInput.value = String((videos.right.currentTime / duration) * 100);
   }
 
-  function playPair() {
-    var hasStarted = videos.left.currentTime > 0 || videos.right.currentTime > 0;
+  function setDelayedVideoTime(nextTime) {
+    var safeTime = Math.max(0, nextTime);
 
-    clearLeftTimer();
-    setButtonState(true);
-    playVideo(videos.right);
+    if (
+      Number.isFinite(videos.left.duration) &&
+      videos.left.duration > 0
+    ) {
+      safeTime = Math.min(safeTime, videos.left.duration);
+    }
 
-    if (hasStarted) {
-      playVideo(videos.left);
+    if (Math.abs(videos.left.currentTime - safeTime) > syncToleranceSeconds) {
+      videos.left.currentTime = safeTime;
+    }
+  }
+
+  function syncDelayedToMaster(shouldPlay) {
+    var masterTime = videos.right.currentTime || 0;
+
+    clearDelayedTimer();
+
+    if (masterTime < delayedStartSeconds) {
+      videos.left.pause();
+      setDelayedVideoTime(0);
+
+      if (shouldPlay) {
+        delayedPlayTimer = window.setTimeout(function () {
+          delayedPlayTimer = null;
+
+          if (!videos.right.paused) {
+            syncDelayedToMaster(true);
+          }
+        }, (delayedStartSeconds - masterTime) * 1000);
+      }
+
       return;
     }
 
-    leftPlayTimer = window.setTimeout(function () {
-      leftPlayTimer = null;
+    setDelayedVideoTime(masterTime - delayedStartSeconds);
+
+    if (shouldPlay && !videos.right.paused && !videos.left.ended) {
       playVideo(videos.left);
-    }, leftDelayMs);
+    }
+  }
+
+  function playPair() {
+    if (videos.right.ended) {
+      videos.right.currentTime = 0;
+      setDelayedVideoTime(0);
+    }
+
+    setButtonState(true);
+    playVideo(videos.right);
+    syncDelayedToMaster(true);
   }
 
   function pausePair() {
-    clearLeftTimer();
+    clearDelayedTimer();
     videos.left.pause();
     videos.right.pause();
     setButtonState(false);
@@ -121,7 +159,7 @@
     setButtonState(false);
 
     toggleButton.addEventListener("click", function () {
-      var isPlaying = !videos.right.paused || !videos.left.paused || Boolean(leftPlayTimer);
+      var isPlaying = !videos.right.paused || !videos.left.paused || Boolean(delayedPlayTimer);
 
       if (isPlaying) {
         pausePair();
@@ -138,21 +176,39 @@
     progressInput.addEventListener("change", function () {
       var duration = getDuration();
       var nextRightTime = duration * (Number(progressInput.value) / 100);
-      var nextLeftTime = Math.max(0, nextRightTime - leftDelayMs / 1000);
+      var shouldContinuePlaying = !videos.right.paused || !videos.left.paused || Boolean(delayedPlayTimer);
 
-      clearLeftTimer();
+      clearDelayedTimer();
       videos.right.currentTime = nextRightTime;
-      videos.left.currentTime = nextLeftTime;
+      syncDelayedToMaster(shouldContinuePlaying);
+
+      if (shouldContinuePlaying && videos.right.paused) {
+        playVideo(videos.right);
+      }
+
       isSeeking = false;
       updateProgress();
     });
 
-    [videos.left, videos.right].forEach(function (video) {
-      video.addEventListener("timeupdate", updateProgress);
+    videos.right.addEventListener("timeupdate", function () {
+      updateProgress();
 
+      if (!videos.right.paused) {
+        syncDelayedToMaster(true);
+      }
+    });
+
+    [videos.left, videos.right].forEach(function (video) {
       video.addEventListener("ended", function () {
-        if (videos.left.ended && videos.right.ended) {
-          clearLeftTimer();
+        if (video === videos.right) {
+          clearDelayedTimer();
+          videos.left.pause();
+          setButtonState(false);
+          return;
+        }
+
+        if (videos.right.ended) {
+          clearDelayedTimer();
           setButtonState(false);
         }
       });

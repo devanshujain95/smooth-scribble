@@ -10,6 +10,11 @@
 - The demo theater is prepared for two recordings:
   - `docs/assets/showcase/product-demo.mp4` for the live app demo.
   - `docs/assets/showcase/technical-walkthrough.mp4` for the spoken implementation walkthrough.
+- The full recordings have been compressed for GitHub Pages without trimming, fast-forwarding, or changing playback speed:
+  - `technical-walkthrough.mp4` comes from `/Users/devanshujain/Downloads/1.mov` and is the master playback timeline.
+  - `product-demo.mp4` comes from `/Users/devanshujain/Downloads/2.MP4` and starts when the walkthrough reaches `1:32` / `92s`.
+  - Both files are H.264/AAC MP4s with `+faststart` and 30 FPS video; the app demo is 720px wide, and the walkthrough is 540px wide for faster page loading.
+- The paired video player now keeps the walkthrough on the right as the master clock, resets the app demo to the beginning before `92s`, starts the app demo at `92s`, and keeps seeking/play-pause controls aligned to the master recording.
 - The implementation note explicitly answers how smoothing works: point thinning, velocity-aware low-pass filtering, quadratic midpoint curves, coalesced pointer events, `requestAnimationFrame` batching, incremental active-stroke drawing, and capped stroke history for replay/undo.
 - The tradeoff answer calls out the WebView canvas choice versus a native renderer and the real-device concerns to watch: WebView rendering cost, memory growth, touch latency on older iPhones, and renderer escalation if profiling proves it necessary.
 - The client-answer section now uses a polished LovelyCouple example for touch-heavy work, including a shared drawing canvas, WebSocket-connected users, iOS widget surfacing, and why React Native Skia was appropriate there while this exercise intentionally uses custom WebView Canvas smoothing.
